@@ -1,4 +1,5 @@
-#Dynamically generates Haikus from Twitter
+# This is a bot that builds haikus on the fly, using the twitter public timeline
+# as input. See the output at @PoetsDontKnowIt on twitter
 
 import sys
 from pymongo import Connection
