@@ -23,6 +23,6 @@ Examples:
 See more at https://twitter.com/#!/favorites 
 
 Dependencies:
-Tweetstream\n
-NLTK\n
+Tweetstream
+NLTK
 Tweepy
