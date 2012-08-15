@@ -2,11 +2,11 @@ This bot builds haikus on the fly from a sample of the twitter public timeline. 
 
 Examples:
 
-#dancing : "the storm is coming // my eyes are closing slowly // dancing in the dark" -- @miss_kocix, @_NoPhotoShop_, @samanthastari
+* #dancing : "the storm is coming // my eyes are closing slowly // dancing in the dark" -- @miss_kocix, @_NoPhotoShop_, @samanthastari
 
-#paper : "stop the tape rewind // absolutely love this song // never heard this song" -- @VAS__HAPPINEN, @All1DRush, @angela1014
+* #paper : "stop the tape rewind // absolutely love this song // never heard this song" -- @VAS__HAPPINEN, @All1DRush, @angela1014
 
-#valentines : "happy valentines // worst valentines day ever // fuck valentines day" -- @slokita, @Arau_u, @jLOUDpack
+* #valentines : "happy valentines // worst valentines day ever // fuck valentines day" -- @slokita, @Arau_u, @jLOUDpack
 
 #shots : "might be up all night // sometimes i get jealous to // i cant handle this" -- @_Jshine, @Berry_Says, @Squeeb_Slayer
 
