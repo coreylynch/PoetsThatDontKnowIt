@@ -101,27 +101,24 @@ def main():
     try:
       with tweetstream.SampleStream(USER,PASS) as stream:
         for tweet in stream:
-          if 'text' in tweet.keys() and len(tweet['text'])>0:
-            # Capture screen name
+          if 'text' in tweet and len(tweet['text'])>0:
             screen_name = tweet['user']['screen_name']
-            # Capture hashes
             hashes = [j for j in set([i for i in tweet['text'].split() if i.startswith('#')])]
             # Strip out urls, punctuation, RTs, and @'s
             tweet_stripped = urlre.sub('',tweet['text'])
             tweet_stripped = punctre.sub('',tweet_stripped)
             tweet_stemmed = [porter_stemmer.stem_word(i.lower()) for i in tweet_stripped.split()]
-            
+            # Keep unstemmed, stripped tweet for either storage or retweeting
             tweet_outgoing = [i.lower() for i in tweet_stripped.split()]
-
-            temptweet = [i.lower() for i in tweet_stemmed if '#' not in i and not i.lower().startswith('rt') and '@' not in i]
-            tweet_for_topic = [i.lower() for i in tweet_stemmed if '#' not in i and not i.lower().startswith('rt') and '@' not in i and nsyl(i)>0 and i.lower() not in stopwords]
-            if len(tweet_for_topic)==len(temptweet):
+            # hack to make sure that only coherent tweets are passed through
+            temp_tweet = [i.lower() for i in tweet_stemmed if not i.lower().startswith('rt')]
+            tweet_for_topic = [i.lower() for i in tweet_stemmed if not i.lower().startswith('rt') and nsyl(i)>0 and i.lower() not in stopwords]
+            if tweet_for_topic==temp_tweet and len(tweet_for_topic)>0:
               print 'Iteration '+str(counter)
-         
               #Assign this tweet a topic
               docset = []
               docset.append(' '.join(i for i in tweet_for_topic))
-              #print 'Tweet: '+docset[0]
+              print 'Tweet: '+docset[0]
               (gamma, bound) = olda.update_lambda(docset)
               counter+=1
               if (counter % 100 == 0):
@@ -134,11 +131,8 @@ def main():
                   lambdak = lambdak / sum(lambdak)
                   temp = zip(lambdak, range(0, len(lambdak)))
                   temp = sorted(temp, key = lambda x: x[0], reverse=True)
-                  top_words[str(k)]=vocab[temp[0][1]]
-           
+                  top_words[str(k)]=vocab[temp[0][1]]           
               topic = numpy.argmax(gamma)
-          
-
               # For each incoming tweet, look for a hash or topic match in the db that also fits haiku format
               # If none exist, add to the db
               hash = ''
@@ -158,14 +152,11 @@ def main():
                     tweet = hash+': '+'"'+stanza1+' // '+stanza2+' // '+stanza3+'"'+' -- '+a1+', '+a2+', '+a3
                   else:
                     tweet = '#'+top_words[str(topic)]+': '+'"'+stanza1+' // '+stanza2+' // '+stanza3+'"'+' -- '+a1+', '+a2+', '+a3
-                  
                   if stanza1 != stanza3: # the timeline has a tendency to repeat tweets
                     print str(topic)+': '+tweet 
                     # Post back to twitter
-                    #posttweet(tweet)
-
+                    posttweet(tweet)
                     # clean up
-                    del hash
                     db.tweets.remove({'_id':t1['_id']})
                     db.tweets.remove({'_id':t2['_id']})
                 else:
@@ -194,12 +185,10 @@ def main():
                     tweet = hash+': '+'"'+stanza1+' // '+stanza2+' // '+stanza3+'"'+' -- '+a1+', '+a2+', '+a3
                   else:
                     tweet = '#'+top_words[str(topic)]+': '+'"'+stanza1+' // '+stanza2+' // '+stanza3+'"'+' -- '+a1+', '+a2+', '+a3 
-              
                   if stanza1!=stanza3: 
                     print str(topic)+': '+tweet
                     # Post back to twitter    
                     posttweet(tweet)
-           
                   # clean up
                   del hash
                   db.tweets.remove({'_id':t1['_id']})
@@ -219,4 +208,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
