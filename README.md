@@ -32,7 +32,7 @@ Examples
 
 \#ignorant : "big booty judy // just made some bomb ass breakfast // diamonds in her veins" -- @Amari_Byrd, @ABitchPipeDown, @nathirobinzon
 
-See more at https://twitter.com/#!/favorites 
+See more at https://twitter.com/poetsdontknowit/favorites 
 
 Some words from the authors
 ===========================
